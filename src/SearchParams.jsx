@@ -13,17 +13,18 @@ const SearchParams = () => {
     location: "",
     animal: "",
     breed: "",
-  })
+  });
   const [animal, setAnimal] = useState("");
   const [breeds] = useBreedList(animal);
-  const [adoptedPet] = useContext(AdoptedPetContext)
+  const [adoptedPet] = useContext(AdoptedPetContext);
 
-  const results = useQuery(["search", requestParams], fetchSearch)
+  const results = useQuery(["search", requestParams], fetchSearch);
   const pets = results?.data?.pets ?? [];
 
   return (
-    <div className="search-params">
+    <div className="my-0 mx-auto w-11/12">
       <form
+        className="p-10 mb-10 rounded-lg bg-gray-200 shadow-lg flex flex-col justify-center items-center"
         onSubmit={(e) => {
           e.preventDefault();
           const formData = new FormData(e.target);
@@ -31,30 +32,30 @@ const SearchParams = () => {
             animal: formData.get("animal") ?? "",
             breed: formData.get("breed") ?? "",
             location: formData.get("location") ?? "",
-          }
+          };
           setRequestParams(obj);
         }}
       >
-        {
-          adoptedPet ? (
-            <div className="pet image-container">
-              <img src={adoptedPet.images[0]} alt={adoptedPet.name} />
-
-            </div>
-          ) : null
-        }
+        {adoptedPet ? (
+          <div className="pet image-container">
+            <img src={adoptedPet.images[0]} alt={adoptedPet.name} />
+          </div>
+        ) : null}
         <label htmlFor="location">
           Location
           <input
             name="location"
             id="location"
             placeholder="Location"
+            type="text"
+            className="w-60 mb-5 block"
           />
         </label>
 
         <label htmlFor="animal">
           Animal
           <select
+            className="w-60 mb-5 block"
             id="animal"
             value={animal}
             onChange={(e) => {
@@ -71,6 +72,7 @@ const SearchParams = () => {
         <label htmlFor="breed">
           Breed
           <select
+            className="w-60 mb-5 block disabled:opacity-50"
             id="breed"
             disabled={breeds.length === 0}
             name="breed"
@@ -81,7 +83,7 @@ const SearchParams = () => {
             ))}
           </select>
         </label>
-        <button>Submit</button>
+        <button className="rounded px-6 py-2 text-white hover:opacity-50 border-none bg-orange-500">Submit</button>
       </form>
       <Results pets={pets} />
     </div>
